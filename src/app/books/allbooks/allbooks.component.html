@@ -1,0 +1,32 @@
+<div class="Container"> 
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>BookName</th>
+      <th>Author</th>
+      <th>Price</th>
+      <th>BookType</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let x of books">
+          <td>{{x.bookname}}</td>
+          <td>{{x.author}}</td>
+          <td>{{x.price}}</td>
+          <td>{{x.booktype}}</td>
+          <td><button class="btn btn-danger " (click)="delete(x)">
+            Delete
+            </button>
+       
+            <button class="btn btn-warning" (click)="edit(x)">
+               Edit 
+            </button>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+<div><button class="btn btn-primary " (click)="add()" data-toggle="tooltip" title="Add!">
+    Add Book
+  </button></div>
