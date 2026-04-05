@@ -4,6 +4,7 @@ import { Router,ActivatedRoute} from '@angular/router';
 
 
 @Component({
+  standalone: false,
   selector: 'app-specbook',
   templateUrl: './specbook.component.html',
   styleUrls: ['./specbook.component.css']

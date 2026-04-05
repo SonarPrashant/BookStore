@@ -15,7 +15,7 @@ export class BooksService {
 
     private books : Ibooks[]=[
         {id:1, bookname: 'You can win', author: 'Shiv Khera', price : 40, booktype :'Inspirational'  },
-        {id:1, bookname: 'Win friends and people', author: 'Dale Carnegiw', price : 340, booktype :'Selfhelp'  },
+        {id:2, bookname: 'Win friends and people', author: 'Dale Carnegie', price : 340, booktype :'Selfhelp'  },
     ];
 
     getBooks() : Ibooks[]{

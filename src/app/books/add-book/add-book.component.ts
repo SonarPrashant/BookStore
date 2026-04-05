@@ -1,28 +1,29 @@
-import { Component, OnInit, Input   } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Ibooks, BooksService } from "src/app/shared/service/books.service";
 
 
+import { Router } from '@angular/router';
+
 @Component({
+  standalone: false,
   selector: 'app-add-book',
-  template: 
+  template:
   `<div class="modal-header">
-  <h1>Add Book</h1>
+  <h5 class="modal-title">{{ id ? 'Edit Book' : 'Add Book' }}</h5>
   <button
     type="button"
-    class="close"
+    class="btn-close"
     aria-label="Close"
     (click)="activeModal.dismiss('Cross click')"
-  >
-    <span aria-hidden="true">&times;</span>
-  </button>
+  ></button>
 </div>
 <div class="modal-body">
-  <input [hidden]="true" #id [value] = "getId()" placeholder="ID" />
-  <input  class="form-control" #bookname [value] = "getbookname()" placeholder="Book Name"  required/>
-  <input class="form-control" #author [value] = "getAuthor()" placeholder="Author" required/>
-  <input   class="form-control" #price [value] = "getPrice()" placeholder="Price" required/>
-  <input   class="form-control" #booktype [value] = "getBooktype()" placeholder="Book Type" required/>
+  <!-- Hidden ID input removed as the property can be directly passed -->
+  <input class="form-control mb-2" #bookname [value]="getbookname()" placeholder="Book Name" required/>
+  <input class="form-control mb-2" #author [value]="getAuthor()" placeholder="Author" required/>
+  <input class="form-control mb-2" #price [value]="getPrice()" placeholder="Price" required/>
+  <input class="form-control mb-2" #booktype [value]="getBooktype()" placeholder="Book Type" required/>
 </div>
 <div class="modal-footer">
 <button
@@ -33,57 +34,58 @@ import { Ibooks, BooksService } from "src/app/shared/service/books.service";
       author: author.value,
       price: price.value,
       booktype: booktype.value,
-      id : id.value
+      id : id
     })">
     Save
   </button>
   <button
     type="button"
-    class="btn btn-primary"
+    class="btn btn-secondary"
     (click)="activeModal.close('Close click')"
   >
     Close
   </button>
 </div>`
- 
+
 })
 export class AddBookComponent implements OnInit {
-  @Input() id: number ;
+  @Input() id: number;
   @Input() bookname: string = "";
   @Input() author: string = "";
   @Input() price: number = 0;
   @Input() booktype: string = "";
 
   books: Ibooks[];
-  sequence: number;
 
   constructor(
     public activeModal: NgbActiveModal,
-    private bookservice: BooksService
+    private bookservice: BooksService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.books = this.bookservice.getBooks();
-    this.sequence = 2;
-    console.log(this.bookname);
   }
-  save(book) {
-    if (book.id === null || book.id=== 'undefined') {
-      this.sequence = this.sequence + 1;
-      book.id = this.sequence;
+
+  save(book: any) {
+    if (!book.id) {
+      // Find highest existing ID and increment by 1
+      const highestId = this.books.length ? Math.max(...this.books.map(b => b.id)) : 0;
+      book.id = highestId + 1;
       this.books.push(book);
-      this.activeModal.close("Close click");
     } else {
       let bk = this.books.find(function(v) {
         return v.id == +book.id;
       });
 
-      bk.bookname = book.bookname;
-      bk.author = book.author;
-      bk.price = book.price;
-      bk.booktype = book.booktype;
-      this.activeModal.close("Close click");
+      if (bk) {
+        bk.bookname = book.bookname;
+        bk.author = book.author;
+        bk.price = book.price;
+        bk.booktype = book.booktype;
+      }
     }
+    this.activeModal.close("Close click");
   }
 
   getbookname() {
@@ -93,9 +95,11 @@ export class AddBookComponent implements OnInit {
   getAuthor() {
     return this.author;
   }
+
   getPrice() {
     return this.price;
   }
+
   getBooktype() {
     return this.booktype;
   }
