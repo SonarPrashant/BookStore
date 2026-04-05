@@ -12,10 +12,8 @@ import { AllbooksComponent } from './books/allbooks/allbooks.component';
 import { SpecbookComponent } from './books/specbook/specbook.component';
 import { BooksService } from './shared/service/books.service';
 import { AddBookComponent } from './books/add-book/add-book.component';
-import { FormsModule,ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-
 
 @NgModule({
   declarations: [
@@ -33,12 +31,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    NgbModule.forRoot()
+    NgbModule
   ],
-  entryComponents: [
-    AddBookComponent
-  ],
-  providers: [ BooksService],
+  providers: [BooksService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
